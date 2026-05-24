@@ -28,7 +28,7 @@ const TABS = [
 const PERSONAL_INFO = {
   name: "力信屹",
   role: "航海科 學生",
-  avatar: "/S125798123.jpg",
+  avatar: "https://lh3.googleusercontent.com/d/19TjHoSxLm4sMGnQD7q9bk9wRjV7seNK2",
   bio: "目前就讀於國立高雄科技大學航海科。對船舶操作、航海技術與海事工程充滿熱忱，喜歡探索廣闊的海洋與學習實務航海知識。希望能將課堂所學結合海上實務經驗，成為一名優秀的航路領航員。",
   email: "a111182122@nkust.edu.tw",
   phone: "+886 912 345 678",
@@ -121,7 +121,11 @@ const PORTFOLIO_PROJECTS = [
     tags: ["影音紀錄", "生活點滴", "實務活動"],
     githubUrl: "",
     demoUrl: "",
-    videoUrls: ["/video1.mp4", "/video2.mp4", "/video3.mp4"]
+    videoUrls: [
+      "https://drive.google.com/file/d/1knGvPl1E7NptjGREsB-sZKjfcQ9G4pia/preview", 
+      "https://drive.google.com/file/d/1L9xK8JOqy0wOzufzOX5Gglc3ubYLd9lY/preview", 
+      "https://drive.google.com/file/d/1p1kR6mn7-7xRPBVuQzXFqvId-M0Dyx8I/preview"
+    ]
   }
 ];
 
@@ -468,11 +472,20 @@ export default function App() {
                     <div className={`mb-8 grid gap-6 ${project.videoUrls.length > 1 ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
                       {project.videoUrls.map((videoUrl, vIdx) => (
                         <div key={vIdx} className="rounded-xl overflow-hidden border border-emerald-100 shadow-sm bg-black flex items-center justify-center">
-                          <video 
-                            src={videoUrl} 
-                            controls 
-                            className="w-full h-auto max-h-[300px] object-contain"
-                          />
+                          {videoUrl.includes('drive.google.com') ? (
+                            <iframe 
+                              src={videoUrl} 
+                              className="w-full aspect-video border-0 max-h-[300px]" 
+                              allow="autoplay; encrypted-media" 
+                              allowFullScreen 
+                            />
+                          ) : (
+                            <video 
+                              src={videoUrl} 
+                              controls 
+                              className="w-full h-auto max-h-[300px] object-contain"
+                            />
+                          )}
                         </div>
                       ))}
                     </div>
