@@ -114,6 +114,14 @@ const PORTFOLIO_PROJECTS = [
     githubUrl: "",
     demoUrl: "https://studio.tripo3d.ai/3d-model/e0d4620f-6a04-4902-a3fe-2b255a97dbcc?invite_code=K7RWRT",
     imageUrls: ["./pic1.jpg", "./pic2.jpg"]
+  },
+  {
+    title: "航海與實務活動紀錄",
+    description: "參與各項實務活動的影音紀錄片段，包含 AI 影片生成與航事實作相關影像。",
+    tags: ["影音紀錄", "生活點滴", "實務活動"],
+    githubUrl: "",
+    demoUrl: "",
+    videoUrls: ["/video1.mp4", "/video2.mp4", "/video3.mp4"]
   }
 ];
 
@@ -414,8 +422,11 @@ export default function App() {
             </h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-              {PORTFOLIO_PROJECTS.map((project, idx) => (
-                <div key={idx} className={`group relative p-8 bg-white/70 backdrop-blur-sm border border-emerald-100 hover:border-emerald-300 rounded-2xl transition-all duration-300 overflow-hidden flex flex-col min-h-[300px] shadow-sm hover:shadow-lg ${project.pdfUrl || project.title === '製作個人3D公仔' ? 'lg:col-span-2' : ''}`}>
+              {PORTFOLIO_PROJECTS.map((project, idx) => {
+                // @ts-ignore
+                const isFullWidth = project.pdfUrl || project.title === '製作個人3D公仔' || (project.videoUrls && project.videoUrls.length > 0);
+                return (
+                <div key={idx} className={`group relative p-8 bg-white/70 backdrop-blur-sm border border-emerald-100 hover:border-emerald-300 rounded-2xl transition-all duration-300 overflow-hidden flex flex-col min-h-[300px] shadow-sm hover:shadow-lg ${isFullWidth ? 'lg:col-span-2' : ''}`}>
                   <h3 className="text-2xl font-bold mb-4 text-emerald-950 group-hover:text-emerald-600 transition-colors">{project.title}</h3>
                   <p className="text-emerald-800/70 font-normal leading-relaxed mb-8 flex-grow text-sm md:text-base">
                     {project.description}
@@ -451,6 +462,21 @@ export default function App() {
                       ))}
                     </div>
                   )}
+
+                  {/* @ts-ignore - Ignore type error if videoUrls is missing from some objects */}
+                  {project.videoUrls && project.videoUrls.length > 0 && (
+                    <div className={`mb-8 grid gap-6 ${project.videoUrls.length > 1 ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+                      {project.videoUrls.map((videoUrl, vIdx) => (
+                        <div key={vIdx} className="rounded-xl overflow-hidden border border-emerald-100 shadow-sm bg-black flex items-center justify-center">
+                          <video 
+                            src={videoUrl} 
+                            controls 
+                            className="w-full h-auto max-h-[300px] object-contain"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   
                   <div className="flex items-center gap-6 mt-auto border-t border-emerald-100/50 pt-6">
                     {project.githubUrl && (
@@ -475,7 +501,8 @@ export default function App() {
                     )}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </section>
             </motion.div>
